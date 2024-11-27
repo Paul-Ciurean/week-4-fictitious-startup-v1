@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  PRODUCT_VERSION: "1.10.0"
+  PRODUCT_VERSION: "1.10.1"
   REGION: "eu-west-1"
 
 permissions:
