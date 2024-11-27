@@ -31,15 +31,6 @@ jobs:
         id: init
         run: "packer init ./image.pkr.hcl"
 
-      - name: Script for secrets
-        run: |
-          sudo cat > secrets.sh <<EOF
-          #!/bin/bash
-          export SECRET_KEY='${{ secrets.SECRET_KEY }}'
-          export DB_USER='${{ secrets.DB_USER }}'
-          export DB_PASSWORD='${{ secrets.DB_PASSWORD }}'
-          EOF
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -47,4 +38,4 @@ jobs:
           role-to-assume: ${{ secrets.ROLE }}
 
       - name: Run 'packer build'
-        run: packer build -color=false -on-error=abort -var "vpc_id=${{ secrets.VPC_ID }}" -var "subnet_id=${{ secrets.SUBNET_ID }}" -var "version=${{ github.ref_name }}"
+        run: packer build -color=false -on-error=abort -var "vpc_id=${{ secrets.VPC_ID }}" -var "subnet_id=${{ secrets.SUBNET_ID }}" -var "version=${{ github.ref_name }}" ./image.pkr.hcl
