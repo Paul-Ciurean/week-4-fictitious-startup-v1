@@ -1,0 +1,50 @@
+name: PACKER
+
+on:
+  release:
+    types: [published]
+
+env:
+  PRODUCT_VERSION: "1.10.0"
+  REGION: "eu-west-1"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Run `packer init`
+        id: init
+        run: "packer init ./image.pkr.hcl"
+
+      - name: Script for secrets
+        run: |
+          sudo cat > secrets.sh <<EOF
+          #!/bin/bash
+          export SECRET_KEY='${{ secrets.SECRET_KEY }}'
+          export DB_USER='${{ secrets.DB_USER }}'
+          export DB_PASSWORD='${{ secrets.DB_PASSWORD }}'
+          EOF
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          region: ${{ env.REGION }}
+          role-to-assume: ${{ secrets.ROLE }}
+
+      - name: Run 'packer build'
+        run: packer build -color=false -on-error=abort -var "vpc_id=${{ secrets.VPC_ID }}" -var "subnet_id=${{ secrets.SUBNET_ID }}" -var "version=${{ github.ref_name }}"
