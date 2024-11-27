@@ -25,7 +25,7 @@ locals {
     ssh_username = "ubuntu"
 }
 
-source {
+source "amazon-ebs" "ubuntu" {
     ami_name = "${local.ami_name}-${var.version}"
     instance_type = "t2.micro"
     region = "eu-west-1"
