@@ -6,7 +6,7 @@ on:
 
 env:
   PRODUCT_VERSION: "1.11.2"
-  REGION: "eu-west-1"
+  AWS_REGION: "eu-west-1"
 
 permissions:
   id-token: write
@@ -43,7 +43,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          region: ${{ env.REGION }}
+          region: ${{ env.AWS_REGION }}
           role-to-assume: ${{ secrets.ROLE }}
 
       - name: Run 'packer build'
