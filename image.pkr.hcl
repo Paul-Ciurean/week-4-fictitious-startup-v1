@@ -55,7 +55,7 @@ build {
 
     provisioner "shell" {
         inline = [
-            "sudo mkdir -p /opt/app"
+            "sudo mkdir -p /opt/app",
             "sudo mv /tmp/* /opt/app"
         ]
     }
