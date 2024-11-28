@@ -14,9 +14,9 @@ packer {
   }
 }
 
-variable "subnet_id" {}
-variable "version" {}
-variable "vpc_id" {}
+variable "subnet_id" { default = "subnet-041317dba128f0ce3" }
+variable "version" { default = "1.10.0" }
+variable "vpc_id" { default = "vpc-0c65a0ee0f4e21502" }
 
 locals {
   ami_name          = "Groot-startup"
@@ -70,7 +70,9 @@ build {
 
   post-processor "amazon-ami-management" {
     regions       = ["eu-west-1"]
-    tags          = local.ami_name
+    tags          = {
+      Name = local.ami_name
+    }
     keep_releases = 2
   }
 }
