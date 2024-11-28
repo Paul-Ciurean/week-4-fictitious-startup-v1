@@ -51,11 +51,13 @@ build {
     provisioner "shell" {
         inline = [
             "sudo mkdir -p /opt/app",
-            "sudo mv /tmp/* /opt/app",
-            "sudo chmod +x /opt/app/setup.sh"
+            "sudo mv /tmp/* /opt/app"
         ]
     }
     
+    provisioner "shell" {
+        script = "setup.sh"
+    }
 
     post-processor "amazon-ami-management" {
         regions = ["eu-west-1"]
