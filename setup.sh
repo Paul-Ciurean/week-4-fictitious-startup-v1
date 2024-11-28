@@ -4,4 +4,4 @@ sudo apt update
 sudo apt install nginx -y
 sudo systemctl start nginx
 sudo systemctl enable nginx
-sudo sed -i "s/Welcome to nginx/Welcome To BabyGroot's website/g" /var/www/index.html
+sudo sed -i "s/Welcome to nginx/Welcome To BabyGroot's website/g" /var/www/html/index.nginx-debian.html
