@@ -23,12 +23,14 @@ locals {
   source_ami_name   = "ubuntu/images/*ubuntu-jammy-22.04-amd64-server*"
   source_ami_owners = ["099720109477"]
   ssh_username      = "ubuntu"
+  tags              = 1.10.0
 }
 
 source "amazon-ebs" "ubuntu" {
   ami_name      = "${local.ami_name}-${var.version}"
   instance_type = "t2.micro"
   region        = "eu-west-1"
+  tags          = local.tags
   source_ami_filter {
     filters = {
       name                = local.source_ami_name
@@ -67,7 +69,7 @@ build {
 
   post-processor "amazon-ami-management" {
     regions       = ["eu-west-1"]
-    identifier    = local.ami_name
+    tags          = local.tags
     keep_releases = 2
   }
 }
