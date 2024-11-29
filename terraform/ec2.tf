@@ -7,7 +7,7 @@ resource "aws_instance" "ec2_instance" {
   instance_type = "t2.micro"
   subnet_id = data.terraform_remote_state.source.outputs.public_subnet_ids[0]
   associate_public_ip_address = true
-  vpc_security_group_ids = [ aws_security_group.allow_http ]
+  vpc_security_group_ids = [ aws_security_group.allow_http.id ]
 
   tags = {
     Name = "Groot-Instance"
