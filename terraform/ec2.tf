@@ -3,9 +3,9 @@
 #######
 
 resource "aws_instance" "ec2_instance" {
-  ami = aws_ami.ubuntu.id
+  ami = data.terraform_remote_state.source.outputs.vpc_id
   instance_type = "t2.micro"
-  subnet_id = output.public_subnet_ids[0]
+  subnet_id = data.terraform_remote_state.source.outputs.public_subnet_ids[0]
   associate_public_ip_address = true
 
   tags = {
