@@ -1,0 +1,38 @@
+name: app_deploy
+
+on:
+    workflow_dispatch:
+        inputs:             
+            ami_version:
+                description: 'AMI version'
+                required: true
+jobs:
+    lapp_deploy:
+        name: app_deploy
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+              working-directory: terraform
+        steps:
+
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+
+            - name: Terraform Workflow
+              uses: hashicorp/setup-terraform@v3
+              with:
+                terraform_version: "1.9.8"
+                cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+            - name: Terraform Init
+              id: init
+              run: terraform init
+
+            - name: Terraform Plan
+              id: plan
+              run: terraform plan -var "custom_ami_version=${{ inputs.ami_version }}"
+              continue-on-error: true
+
+            - name: Terraform Apply
+              id: Apply
+              run: terraform apply -var "custom_ami_version=${{ inputs.ami_version }}" -auto-approve
