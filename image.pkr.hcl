@@ -14,9 +14,9 @@ packer {
   }
 }
 
-variable "subnet_id" { default = "subnet-041317dba128f0ce3" }
-variable "version" { default = "1.10.0" }
-variable "vpc_id" { default = "vpc-0c65a0ee0f4e21502" }
+variable "subnet_id" {}
+variable "version" {}
+variable "vpc_id" {}
 
 locals {
   ami_name          = "Groot-startup"
