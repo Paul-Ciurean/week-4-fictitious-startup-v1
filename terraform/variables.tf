@@ -4,5 +4,5 @@ variable "custom_ami_version" {
 
 variable "role_ssm" {
   description = "The role for SSM"
-  default = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  default     = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }

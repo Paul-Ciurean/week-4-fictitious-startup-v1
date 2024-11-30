@@ -4,9 +4,9 @@ resource "aws_iam_instance_profile" "instance_profile" {
 }
 
 resource "aws_iam_role" "role" {
-  name               = "instance_profile_role"
-  assume_role_policy = {
-    assume_role_policy = jsonencode({
+  name = "instance_profile_role"
+
+  assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
       Action = "sts:AssumeRole"
@@ -16,10 +16,9 @@ resource "aws_iam_role" "role" {
       }
     }]
   })
-  }
 }
 
 resource "aws_iam_role_policy_attachment" "name" {
-  role = aws_iam_role.role.name
+  role       = aws_iam_role.role.name
   policy_arn = var.role_ssm
 }
