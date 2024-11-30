@@ -57,10 +57,17 @@ build {
     ]
   }
 
+  provisioner "file" {
+    source      = "./"
+    destination = "/tmp"
+  }
+  
   provisioner "shell" {
     inline = [
+      "echo Moving files...",
       "sudo mkdir -p /opt/app",
-      "sudo mv /tmp/* /opt/app"
+      "sudo mv /tmp/* /opt/app",
+      "sudo chmod +x /opt/app/setup.sh"
     ]
   }
 
