@@ -78,7 +78,7 @@ source ~/groot/bin/activate
 # Relevant link: https://realpython.com/what-is-pip/
 #################################################################################################
 
-python3 -m pip install -r $APP_DIR\requirements.txt
+python3 -m pip install -r $APP_DIR/requirements.txt
 
 # Apply Django migrations
 python3 $APP_DIR/manage.py makemigrations
@@ -94,7 +94,7 @@ After=network.target
 User=$USER
 Group=www-data
 WorkingDirectory=$APP_DIR
-ExecStart=$PWD/groot/bin/gunicorn \
+ExecStart=$APP_DIR/groot/bin/gunicorn \
           --workers 3 \
           --bind unix:/tmp/gunicorn.sock \
           cloudtalents.wsgi:application
