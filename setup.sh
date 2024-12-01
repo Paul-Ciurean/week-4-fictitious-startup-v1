@@ -69,8 +69,8 @@ sudo sed -i 's\REPLACE_DATABASE_PASSWORD\'$DB_PASSWORD'\g' $APP_DIR/cloudtalents
 # Relevant link: https://www.liquidweb.com/blog/how-to-setup-a-python-virtual-environment-on-ubuntu-18-04/
 #################################################################################################
 
-sudo python3 -m venv groot
-source groot/bin/activate
+python3 -m venv ~/groot
+source ~/groot/bin/activate
 
 #################################################################################################
 # Install the Python dependencies listed in requirements.txt
@@ -78,7 +78,7 @@ source groot/bin/activate
 # Relevant link: https://realpython.com/what-is-pip/
 #################################################################################################
 
-sudo python3 -m pip install -r $APP_DIR/requirements.txt
+python3 -m pip install -r $APP_DIR/requirements.txt
 
 # Apply Django migrations
 python3 $APP_DIR/manage.py makemigrations
