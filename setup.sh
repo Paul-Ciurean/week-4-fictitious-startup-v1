@@ -8,7 +8,7 @@ APP_DIR="/opt/app"
 # Relevant link: https://www.geeksforgeeks.org/chown-command-in-linux-with-examples/
 #################################################################################################
 
-sudo chown -R ubuntu $APP_DIR
+sudo chown -R ubuntu: $APP_DIR
 
 #################################################################################################
 # Update Ubuntu's package list and install the following dependencies:
@@ -21,13 +21,8 @@ sudo chown -R ubuntu $APP_DIR
 # Relevant link: https://ubuntu.com/server/docs/package-management
 #################################################################################################
 
-sudo apt-get update
-sudo apt install -y python3-pip \
-    python3-venv \
-    postgresql \
-    postgresql-contrib \
-    nginx
-sudo systemctl enable --now nginx
+sudo apt update -y
+sudo apt install -y python3-pip python3-venv postgresql postgresql-contrib nginx
 
 #################################################################################################
 # Start and enable the PostgreSQL service
@@ -74,8 +69,8 @@ sudo sed -i 's\REPLACE_DATABASE_PASSWORD\'$DB_PASSWORD'\g' $APP_DIR/opt/app/clou
 # Relevant link: https://www.liquidweb.com/blog/how-to-setup-a-python-virtual-environment-on-ubuntu-18-04/
 #################################################################################################
 
-sudo python3 -m venv groot
-source groot/bin/activate
+sudo python3 -m venv ~/groot
+source ~/groot/bin/activate
 
 #################################################################################################
 # Install the Python dependencies listed in requirements.txt
@@ -115,7 +110,7 @@ sudo mv /tmp/gunicorn.service /etc/systemd/system/gunicorn.service
 # Relevant link: https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
 #################################################################################################
 
-sudo systemctl enable gunicorn.service --now
+sudo systemctl enable gunicorn --now
 
 # Configure Nginx to proxy requests to Gunicorn
 sudo rm /etc/nginx/sites-enabled/default
