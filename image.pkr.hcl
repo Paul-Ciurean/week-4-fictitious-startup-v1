@@ -77,9 +77,7 @@ build {
 
   post-processor "amazon-ami-management" {
     regions       = ["eu-west-1"]
-    tags          = {
-      Name = local.ami_name
-    }
+    identifier    = local.ami_name
     keep_releases = 2
   }
 }

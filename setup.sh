@@ -59,9 +59,9 @@ EOF
 # Relevant link: https://www.geeksforgeeks.org/sed-command-in-linux-unix-with-examples/
 #################################################################################################
 
-sudo sed -i 's\REPLACE_SECRET_KEY\'$SECRET_KEY'\g' $APP_DIR/opt/app/cloudtalents/settings.py
-sudo sed -i 's\REPLACE_DATABASE_USER\'$DB_USER'\g' $APP_DIR/opt/app/cloudtalents/settings.py
-sudo sed -i 's\REPLACE_DATABASE_PASSWORD\'$DB_PASSWORD'\g' $APP_DIR/opt/app/cloudtalents/settings.py
+sudo sed -i 's\REPLACE_SECRET_KEY\'$SECRET_KEY'\g' $APP_DIR/cloudtalents/settings.py
+sudo sed -i 's\REPLACE_DATABASE_USER\'$DB_USER'\g' $APP_DIR/cloudtalents/settings.py
+sudo sed -i 's\REPLACE_DATABASE_PASSWORD\'$DB_PASSWORD'\g' $APP_DIR/cloudtalents/settings.py
 
 #################################################################################################
 # Create a Python virtual environment in the current directory and activate it
@@ -69,8 +69,8 @@ sudo sed -i 's\REPLACE_DATABASE_PASSWORD\'$DB_PASSWORD'\g' $APP_DIR/opt/app/clou
 # Relevant link: https://www.liquidweb.com/blog/how-to-setup-a-python-virtual-environment-on-ubuntu-18-04/
 #################################################################################################
 
-sudo python3 -m venv ~/groot
-source ~/groot/bin/activate
+sudo python3 -m venv groot
+source groot/bin/activate
 
 #################################################################################################
 # Install the Python dependencies listed in requirements.txt
@@ -78,7 +78,7 @@ source ~/groot/bin/activate
 # Relevant link: https://realpython.com/what-is-pip/
 #################################################################################################
 
-python3 -m pip install -r $APP_DIR/requirements.txt
+sudo python3 -m pip install -r $APP_DIR/requirements.txt
 
 # Apply Django migrations
 python3 $APP_DIR/manage.py makemigrations
@@ -94,7 +94,7 @@ After=network.target
 User=$USER
 Group=www-data
 WorkingDirectory=$APP_DIR
-ExecStart=$APP_DIR/groot/bin/gunicorn \
+ExecStart=$PWD/groot/bin/gunicorn \
           --workers 3 \
           --bind unix:/tmp/gunicorn.sock \
           cloudtalents.wsgi:application
