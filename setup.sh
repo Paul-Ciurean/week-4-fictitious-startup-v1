@@ -8,7 +8,7 @@ APP_DIR="/opt/app"
 # Relevant link: https://www.geeksforgeeks.org/chown-command-in-linux-with-examples/
 #################################################################################################
 
-sudo -R ubuntu /opt/app
+sudo chown -R ubuntu $APP_DIR
 
 #################################################################################################
 # Update Ubuntu's package list and install the following dependencies:
@@ -35,8 +35,7 @@ sudo systemctl enable --now nginx
 # Relevant link: https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
 #################################################################################################
 
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
+sudo systemctl enable postgresql --now
 
 #################################################################################################
 # Load the secret values from secrets.sh
@@ -44,7 +43,7 @@ sudo systemctl enable postgresql
 # Relevant link: https://www.tutorialspoint.com/linux-source-command
 #################################################################################################
 
-source /opt/app/secrets.sh
+source $APP_DIR/secrets.sh
 
 #################################################################################################
 # Configure PostgreSQL database based on details from secrets.sh
@@ -116,7 +115,7 @@ sudo mv /tmp/gunicorn.service /etc/systemd/system/gunicorn.service
 # Relevant link: https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
 #################################################################################################
 
-sudo systemctl enable --now gunicorn
+sudo systemctl enable gunicorn.service --now
 
 # Configure Nginx to proxy requests to Gunicorn
 sudo rm /etc/nginx/sites-enabled/default
