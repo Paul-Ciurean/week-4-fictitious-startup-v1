@@ -8,7 +8,7 @@ APP_DIR="/opt/app"
 # Relevant link: https://www.geeksforgeeks.org/chown-command-in-linux-with-examples/
 #################################################################################################
 
-sudo -R ssm-user /opt/app
+sudo -R ubuntu /opt/app
 
 #################################################################################################
 # Update Ubuntu's package list and install the following dependencies:
@@ -27,8 +27,7 @@ sudo apt install -y python3-pip \
     postgresql \
     postgresql-contrib \
     nginx
-sudo systemctl start nginx
-sudo systemctl enable nginx
+sudo systemctl enable --now nginx
 
 #################################################################################################
 # Start and enable the PostgreSQL service
@@ -44,7 +43,8 @@ sudo systemctl enable postgresql
 #
 # Relevant link: https://www.tutorialspoint.com/linux-source-command
 #################################################################################################
-TODO
+
+source /opt/app/secrets.sh
 
 #################################################################################################
 # Configure PostgreSQL database based on details from secrets.sh
@@ -64,21 +64,27 @@ EOF
 #
 # Relevant link: https://www.geeksforgeeks.org/sed-command-in-linux-unix-with-examples/
 #################################################################################################
-TODO
+
+sudo sed -i 's\REPLACE_SECRET_KEY\'$SECRET_KEY'\g' $APP_DIR/opt/app/cloudtalents/settings.py
+sudo sed -i 's\REPLACE_DATABASE_USER\'$DB_USER'\g' $APP_DIR/opt/app/cloudtalents/settings.py
+sudo sed -i 's\REPLACE_DATABASE_PASSWORD\'$DB_PASSWORD'\g' $APP_DIR/opt/app/cloudtalents/settings.py
 
 #################################################################################################
 # Create a Python virtual environment in the current directory and activate it
 #
 # Relevant link: https://www.liquidweb.com/blog/how-to-setup-a-python-virtual-environment-on-ubuntu-18-04/
 #################################################################################################
-TODO
+
+sudo python3 -m venv groot
+source groot/bin/activate
 
 #################################################################################################
 # Install the Python dependencies listed in requirements.txt
 #
 # Relevant link: https://realpython.com/what-is-pip/
 #################################################################################################
-TODO
+
+python3 -m pip install -r $APP_DIR\requirements.txt
 
 # Apply Django migrations
 python3 $APP_DIR/manage.py makemigrations
@@ -94,7 +100,7 @@ After=network.target
 User=$USER
 Group=www-data
 WorkingDirectory=$APP_DIR
-ExecStart=$PWD/venv/bin/gunicorn \
+ExecStart=$PWD/groot/bin/gunicorn \
           --workers 3 \
           --bind unix:/tmp/gunicorn.sock \
           cloudtalents.wsgi:application
@@ -109,7 +115,8 @@ sudo mv /tmp/gunicorn.service /etc/systemd/system/gunicorn.service
 #
 # Relevant link: https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
 #################################################################################################
-TODO
+
+sudo systemctl enable --now gunicorn
 
 # Configure Nginx to proxy requests to Gunicorn
 sudo rm /etc/nginx/sites-enabled/default
@@ -144,14 +151,18 @@ sudo nginx -t
 #
 # Relevant link: https://www.digitalocean.com/community/tutorials/how-to-use-systemctl-to-manage-systemd-services-and-units
 #################################################################################################
-TODO
+
+sudo systemctl daemon-reload
+sudo systemctl restart nginx
 
 #################################################################################################
 # Allow traffic to port 80 using ufw
 #
 # Relevant link: https://codingforentrepreneurs.com/blog/hello-linux-nginx-and-ufw-firewall
 #################################################################################################
-TODO
+
+sudo ufw allow http
+sudo ufw enable
 
 # Print completion message
 echo "Django application setup complete!"
