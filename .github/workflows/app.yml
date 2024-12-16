@@ -31,7 +31,6 @@ jobs:
             - name: Terraform Plan
               id: plan
               run: terraform plan -var "custom_ami_version=${{ inputs.ami_version }}"
-              continue-on-error: true
 
             - name: Terraform Apply
               id: Apply
