@@ -5,7 +5,7 @@ on:
     types: [published]
 
 env:
-  PRODUCT_VERSION: "1.11.3"
+  PRODUCT_VERSION: "1.11.2"
   AWS_REGION: "eu-west-1"
 
 permissions:
