@@ -7,7 +7,7 @@ on:
                 description: 'AMI version'
                 required: true
 jobs:
-    lapp_deploy:
+    app_deploy:
         name: app_deploy
         runs-on: ubuntu-latest
         defaults:
